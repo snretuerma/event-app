@@ -215,7 +215,7 @@
                     v-model="form.time_end"
                     full-width
                     :allowed-hours="allowedEndHours"
-                    :allowed-minutes="allowedMinutes"
+                    :allowed-minutes="allowedEndMinutes"
                     min="8:00"
                     max="20:00"
                     @click:minute="$refs.end_time_picker.save(form.time_end)"
@@ -453,14 +453,33 @@ export default {
     allowedEndMonhs(value) {
       return value >= this.form.date_start
     },
-    allowedHours: v => v >= new Date().getHours() && v <= 20,
-    allowedMinutes:  v => v >= 0 && v <= 60,
+    allowedHours(value) {
+      if(new Date().toISOString().split('T')[0] === new Date(this.form.date_start).toISOString().split('T')[0]) {
+        return value >= new Date().getHours() && value <= 20
+      } else {
+        return v => v >= 8 && v <= 20
+      }
+    },
+    allowedMinutes(value) {
+      if(new Date().toISOString().split('T')[0] === new Date(this.form.date_start).toISOString().split('T')[0]) {
+        return value >= new Date().getMinutes() && value <= 60
+      } else {
+        return value >= 0 && value <= 60
+      }
+    },
     allowedEndHours(v) {
       if (this.form.time_start && this.form.date_start == this.form.date_end) {
         const start = this.form?.time_start?.split(':')[0]
         return v >= start && v <= 20
       } else {
         return v => v >= 8 && v <= 20
+      }
+    },
+    allowedEndMinutes(value) {
+      if(this.form.date_start === this.form.date_end) {
+        return value >= this.form.time_start.split(':')[1] && value <= 60
+      } else {
+        return value >= 0 && value <= 60
       }
     }
   },
