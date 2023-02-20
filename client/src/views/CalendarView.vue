@@ -80,7 +80,7 @@
 <script>
 import axios from 'axios'
   export default {
-    name: 'Calendar View',
+    name: 'CalendarView',
     data() {
       return {
         type: 'month',
