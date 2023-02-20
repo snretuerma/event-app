@@ -2,6 +2,7 @@
 
 ## Project setup
 ```
+// modify the mongodb dev uri to your own uri
 cp .env.example .env.
 
 npm install
